@@ -1,4 +1,4 @@
-from telegram.ext import Updater, MessageHandler, filters, ContextTypes, Application, CommandHandler
+from telegram.ext import MessageHandler, filters, ContextTypes, Application, CommandHandler
 from telegram import Update, File
 from hashlib import md5
 from os import remove
@@ -23,12 +23,13 @@ async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await new_file.download_to_drive(DOWNLOADS + fileName)
 
         #send the md5
-        await update.message.reply_text("md5: " + hash_image(DOWNLOADS + fileName))
+        print("[*] md5: " + hash_image(DOWNLOADS + fileName))
+        await update.message.reply_text("cyberat md5: " + hash_image(DOWNLOADS + fileName))
 
         #delete the user file
         remove(DOWNLOADS + fileName)
     else:
-        await update.message.reply_text("Invalid file type, only jpeg / jpg.")
+        await update.message.reply_text("cyberat ERROR: Invalid file type, only jpeg / jpg.")
 
 async def start_command(update, context):
     #send welcome message to the user
@@ -36,11 +37,11 @@ async def start_command(update, context):
 
 async def text_error(update, contex):
     #send the text error message
-    await update.message.reply_text("Please send only images in types jpeg / jpg.")
+    await update.message.reply_text("cyberat ERROR: Please send only images in types jpeg / jpg.")
 
 def main():
     #starting the bot app
-    print("starts bot...")
+    print("[*] starts bot...")
     app = Application.builder().token(TOKEN).build()
 
     #setting the handler functions
@@ -49,7 +50,7 @@ def main():
     app.add_handler(MessageHandler(filters.Document.ALL, handle_file))
 
     #statring the poll
-    print("starts polling...")
+    print("[*] starts polling...")
     app.run_polling()
 
 if __name__ == '__main__':
