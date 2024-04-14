@@ -1,0 +1,14 @@
+{
+    
+    "platformName": "<>",
+    "platformVersion": "<>",
+    "deviceName": "<>",
+    "automationName": "<>",
+    "ensureWebviewsHavePages": true,
+    "nativeWebScreenshot": true,
+    "newCommandTimeout": 3600,
+    "connectHardwareKeyboard": true,        
+
+    "Remote": "<Server address>"
+
+}

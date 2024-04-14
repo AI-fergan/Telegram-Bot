@@ -1,11 +1,9 @@
-from telegram.ext import Updater, MessageHandler, filters, ContextTypes, Application, CommandHandler
+from telegram.ext import MessageHandler, filters, ContextTypes, Application, CommandHandler
 from telegram import Update, File
 from hashlib import md5
-from os import remove
+from os import remove, makedirs
 
-#bot settings
-TOKEN = "7056541263:AAFRZLU5TMNRicql-urv0EEPzSxkWMB42G0"
-DOWNLOADS = "Files\\"
+import config
 
 def hash_image(file_path):
     #calc the md5 of the image
@@ -20,28 +18,30 @@ async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
         #download file
         fileName = update.message.document.file_name
         new_file = await update.message.effective_attachment.get_file()
-        await new_file.download_to_drive(DOWNLOADS + fileName)
+        await new_file.download_to_drive(config.DOWNLOADS + fileName)
 
         #send the md5
-        await update.message.reply_text("md5: " + hash_image(DOWNLOADS + fileName))
+        print("[*] md5: " + hash_image(config.DOWNLOADS + fileName))
+        await update.message.reply_text(("%s md5: " % config.BOT_NAME) + hash_image(config.DOWNLOADS + fileName))
 
         #delete the user file
-        remove(DOWNLOADS + fileName)
+        remove(config.DOWNLOADS + fileName)
     else:
-        await update.message.reply_text("Invalid file type, only jpeg / jpg.")
+        await update.message.reply_text(("%s ERROR: Invalid file type, only jpeg / jpg.") % config.BOT_NAME)
 
 async def start_command(update, context):
     #send welcome message to the user
-    await update.message.reply_text("Welcome to the CybeRat image convertor to hash!")
+    await update.message.reply_text(("Welcome to the %s image convertor to hash!") % config.BOT_NAME)
 
 async def text_error(update, contex):
     #send the text error message
-    await update.message.reply_text("Please send only images in types jpeg / jpg.")
+    await update.message.reply_text(("%s ERROR: Please send only images in types jpeg / jpg.") % config.BOT_NAME)
 
 def main():
     #starting the bot app
-    print("starts bot...")
-    app = Application.builder().token(TOKEN).build()
+    print("[*] starts bot...")
+    makedirs(config.DOWNLOADS, exist_ok=True)
+    app = Application.builder().token(config.TOKEN).build()
 
     #setting the handler functions
     app.add_handler(CommandHandler('start', start_command))
@@ -49,7 +49,7 @@ def main():
     app.add_handler(MessageHandler(filters.Document.ALL, handle_file))
 
     #statring the poll
-    print("starts polling...")
+    print("[*] starts polling...")
     app.run_polling()
 
 if __name__ == '__main__':
