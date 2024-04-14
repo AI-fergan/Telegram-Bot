@@ -2,19 +2,20 @@ from appium import webdriver
 from appium.options.common.base import AppiumOptions
 from appium.webdriver.common.appiumby import AppiumBy
 from time import sleep
+import config
 
 def Test(driver: webdriver.Remote):
     """
-    This function check if the cyberat bot send Error message 
+    This function check if the bot send Error message 
     when the user send not valid type of image.
     """
     element = driver.find_element(AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("Telegram")').click()
     sleep(0.1)
     element = driver.find_element(AppiumBy.XPATH, '//android.widget.ImageButton[@content-desc="Search"]/android.widget.ImageView').click()
 
-    element = driver.find_element(AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("Search")').send_keys("imcyberat_bot")
+    element = driver.find_element(AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("Search")').send_keys(config.USERNAME)
 
-    element = driver.find_element(AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("CybeRat, bot")').click()
+    element = driver.find_element(AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().text("' + config.USERNAME + '")').click()
     sleep(0.1)
     element = driver.find_element(AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().description("Attach media")').click()
     sleep(0.2)
@@ -38,7 +39,6 @@ def Test(driver: webdriver.Remote):
     sleep(0.1)
 
     #get the last message of the user
-    pattern = "cyberat"
-    elements = driver.find_elements(AppiumBy.XPATH, f"//*[contains(@text, '{pattern}')]")
+    elements = driver.find_elements(AppiumBy.XPATH, f"//*[contains(@text, '{config.BOT_NAME}')]")
 
-    return str(elements[-1].text).split(": ")[0] == "cyberat ERROR"
+    return str(elements[-1].text).split(": ")[0] == config.BOT_NAME + " ERROR"

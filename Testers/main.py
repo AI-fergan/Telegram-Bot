@@ -1,24 +1,24 @@
 import Tester_1, Tester_2, Tester_3
 from appium import webdriver
 from appium.options.common.base import AppiumOptions
-
+import config
 def getDriver():
     """
     This function configure the driver settings and return it.
     """
     options = AppiumOptions()
     options.load_capabilities({
-        "platformName": "Android",
-        "appium:platformVersion": "11.0",
-        "appium:deviceName": "emulator-5554",
-        "appium:automationName": "UIAutomator2",
-        "appium:ensureWebviewsHavePages": True,
-        "appium:nativeWebScreenshot": True,
-        "appium:newCommandTimeout": 3600,
-        "appium:connectHardwareKeyboard": True
+        "platformName": config.platformName,
+        "appium:platformVersion": config.platformVersion,
+        "appium:deviceName": config.deviceName,
+        "appium:automationName": config.automationName,
+        "appium:ensureWebviewsHavePages": config.ensureWebviewsHavePages,
+        "appium:nativeWebScreenshot": config.nativeWebScreenshot,
+        "appium:newCommandTimeout": config.newCommandTimeout,
+        "appium:connectHardwareKeyboard": config.connectHardwareKeyboard
     })
 
-    return webdriver.Remote("http://127.0.0.1:4723", options=options)
+    return webdriver.Remote(config.Remote, options=options)
 
 
 def main():

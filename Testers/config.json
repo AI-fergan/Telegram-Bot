@@ -1,0 +1,14 @@
+{
+    
+    "platformName": "Android",
+    "platformVersion": "11.0",
+    "deviceName": "emulator-5554",
+    "automationName": "UIAutomator2",
+    "ensureWebviewsHavePages": true,
+    "nativeWebScreenshot": true,
+    "newCommandTimeout": 3600,
+    "connectHardwareKeyboard": true,        
+
+    "Remote": "http://127.0.0.1:4723"
+
+}
